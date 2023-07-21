@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
-import { sayInput, populateVoiceList } from 'api';
+import { sayInput, populateVoiceList } from '../api';
+import { IconButton } from '@mui/material';
+import MicIcon from '@mui/icons-material/Mic';
+
 import {
   Box,
   ButtonGroup,
@@ -52,7 +55,7 @@ const OdeteForm = () => {
           </MenuItem>
         ))
       ) : (
-        <MenuItem value='Alex'>Alex - en-US</MenuItem>
+        <MenuItem value='Alex'>Odete</MenuItem>
       )
     );
   }, [voiceList]);
@@ -76,10 +79,10 @@ const OdeteForm = () => {
         <FormControl
           sx={{ width: '25%', minWidth: '150px', m: '0.5rem 0.5rem 1.5rem' }}
         >
-          <InputLabel htmlFor='voices-id'>Voices</InputLabel>
+          <InputLabel htmlFor='voices-id'>Vozes</InputLabel>
           <Select
             labelId='voices-id'
-            label='Voices'
+            label='Vozes'
             id=''
             value={voice}
             onChange={(e) => setVoice(e.target.value)}
@@ -90,9 +93,9 @@ const OdeteForm = () => {
         <FormControl
           sx={{ width: '10%', m: '0.5rem 0.5rem 1.5rem', minWidth: '75px' }}
         >
-          <InputLabel>Rate</InputLabel>
+          <InputLabel>Ritmo</InputLabel>
           <Select
-            label='Rate'
+            label='Ritmo'
             value={rate}
             onChange={(e) => setRate(Number(e.target.value))}
           >
@@ -106,9 +109,9 @@ const OdeteForm = () => {
         <FormControl
           sx={{ width: '10%', m: '0.5rem 0.5rem 1.5rem', minWidth: '75px' }}
         >
-          <InputLabel>Pitch</InputLabel>
+          <InputLabel>Tom</InputLabel>
           <Select
-            label='Pitch'
+            label='Tom'
             defaultValue={pitch}
             value={pitch}
             onChange={(e) => setPitch(Number(e.target.value))}
@@ -123,7 +126,7 @@ const OdeteForm = () => {
         <FormControl fullWidth>
           <TextField
             onChange={(e) => setTextInput(e.target.value)}
-            label='Input Text'
+            label='Insira o Texto'
             variant='outlined'
             color='primary'
             multiline
@@ -131,25 +134,33 @@ const OdeteForm = () => {
             required
             sx={{ mb: 4 }}
           />
+          <IconButton
+            sx={{
+              width: "3rem",
+              position: 'absolute',
+              marginTop: '10.5rem',
+              marginLeft: '50rem'
+            }}
+          ><MicIcon sx={{fontSize: 32}}/></IconButton>
         </FormControl>
         <ButtonGroup aria-label='Talkify Controls'>
           <Button
             type='submit'
             variant='contained'
-            color='primary'
+            color='secondary'
             size='large'
             disableElevation
           >
-            Talk to me
+            Fale Comigo
           </Button>
           <Button
             variant='contained'
-            color='secondary'
+            color='primary'
             size='large'
             disableElevation
             onClick={() => window.speechSynthesis.pause()}
           >
-            Pause
+            Pausar
           </Button>
           <Button
             variant='contained'
@@ -158,7 +169,7 @@ const OdeteForm = () => {
             disableElevation
             onClick={() => window.speechSynthesis.resume()}
           >
-            Resume
+            Retomar
           </Button>
           <Button
             variant='contained'
@@ -167,7 +178,7 @@ const OdeteForm = () => {
             disableElevation
             onClick={() => window.speechSynthesis.cancel()}
           >
-            Stop
+            Parar
           </Button>
         </ButtonGroup>
       </form>

@@ -18,7 +18,7 @@ const Home: NextPage = () => {
       </Head>
 
       <Container component='main' maxWidth='md' sx={{ mt: 4, mb: 8 }}>
-        <Typography component='h1' variant='h1' align='center' color='primary'>
+        <Typography component='h1' variant='h1' align='center' color='secondary'>
           Odete
         </Typography>
         <Typography
@@ -27,7 +27,7 @@ const Home: NextPage = () => {
           lineHeight='1.25'
           sx={{ fontSize: 20, mt: 3, mb: 4 }}
         >
-          Browser-based text-to-speech app because reading is for nerds.
+          Tire suas dúvidas comigo jovem.
         </Typography>
         <OdeteForm />
       </Container>
