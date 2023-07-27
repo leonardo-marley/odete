@@ -174,6 +174,7 @@ const OdeteForm = () => {
             color='secondary'
             size='large'
             disableElevation
+            onClick={() => textInput ? setTextInput(textInput) : setTextInput(text)}
           >
             Fale Comigo
           </Button>
