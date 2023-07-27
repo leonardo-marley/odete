@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { sayInput, populateVoiceList } from '../api';
+import { sayInput, populateVoiceList} from '../api';
 import { IconButton } from '@mui/material';
 import MicIcon from '@mui/icons-material/Mic';
+import useSpeechRecognition from './hooks/useSpeechRecognitionHook'
 
 import {
   Box,
@@ -27,10 +28,20 @@ interface voiceProps {
 const OdeteForm = () => {
   const [textInput, setTextInput] = useState('');
   const [voiceList, setVoiceList] = useState<any>([]);
+  const [able, setAble] = useState<boolean>();
   const [voiceOptions, setVoiceOptions] = useState([]);
   const [voice, setVoice] = useState('Alex');
   const [pitch, setPitch] = useState<number>(1);
   const [rate, setRate] = useState<number>(1);
+  const [focus, setFocus] = useState(false);
+  const {
+    text,
+    startListening, 
+    stopListening, 
+    isListening, 
+    hasRecognitionSupport
+  } = useSpeechRecognition();
+  const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
     const fetchVoices = () => {
@@ -68,12 +79,21 @@ const OdeteForm = () => {
     );
   }, [voiceList]);
 
+  useEffect(() => {
+    setIsClient(true)
+  }, []);
+
+
+
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     textInput.length && sayInput(textInput, voice, pitch, rate);
   };
 
+
+
   return (
+    <>{ isClient &&
     <Box textAlign='center'>
       <form autoComplete='off' onSubmit={handleSubmit}>
         <FormControl
@@ -133,15 +153,19 @@ const OdeteForm = () => {
             rows={8}
             required
             sx={{ mb: 4 }}
+            value={text ? text : textInput}
           />
-          <IconButton
-            sx={{
-              width: "3rem",
-              position: 'absolute',
-              marginTop: '10.5rem',
-              marginLeft: '50rem'
-            }}
-          ><MicIcon sx={{fontSize: 32}}/></IconButton>
+          { hasRecognitionSupport && 
+            <IconButton
+              sx={{
+                width: "3rem",
+                position: 'absolute',
+                marginTop: '10.5rem',
+                marginLeft: '50rem'
+              }}
+              onClick={startListening}
+            ><MicIcon sx={{fontSize: 32} }/></IconButton>
+          }
         </FormControl>
         <ButtonGroup aria-label='Talkify Controls'>
           <Button
@@ -183,6 +207,8 @@ const OdeteForm = () => {
         </ButtonGroup>
       </form>
     </Box>
+    }
+    </>
   );
 };
 

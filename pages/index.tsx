@@ -4,6 +4,7 @@ import { Container, Typography, Link } from '@mui/material';
 import OdeteForm from '../components/OdeteForm';
 import Footer from '../components/Footer';
 
+
 const Home: NextPage = () => {
   return (
     <div>
@@ -29,7 +30,9 @@ const Home: NextPage = () => {
         >
           Tire suas dúvidas comigo jovem.
         </Typography>
-        <OdeteForm />
+        
+          <OdeteForm />
+        
       </Container>
       <Footer>
         

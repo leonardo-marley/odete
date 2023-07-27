@@ -1,14 +1,19 @@
+import { useEffect, useState } from "react";
 declare const window: any;
 
 const synth = typeof window !== 'undefined' && window.speechSynthesis;
 
+
+
 export const populateVoiceList = () => {
+  if (typeof window !== "undefined") {
   try {
     let voices = synth.getVoices();
     return voices.sort((a: any, b: any) => a.name.localeCompare(b.name));
   } catch (err) {
     console.log(err);
   }
+}
 };
 
 export const sayInput = (
@@ -17,6 +22,7 @@ export const sayInput = (
   pitch: number,
   rate: number
 ) => {
+  if (typeof window !== "undefined") {
   const utterance = new SpeechSynthesisUtterance(speechValue);
 
   populateVoiceList().forEach((voice: any) => {
@@ -31,4 +37,7 @@ export const sayInput = (
 
   window.speechSynthesis.cancel();
   synth.speak(utterance);
+}
 };
+
+
