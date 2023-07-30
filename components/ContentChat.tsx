@@ -6,21 +6,26 @@ interface FooterProps {
 
 const useStyles = makeStyles({
   footer: {
-    borderTop: 'thin solid rgba(0,0,0,.05)',
+    display: 'grid',
+    border: 'thin solid rgba(0,0,0,.2)',
+    borderRadius: '.3rem',
     padding: '1rem',
     bottom: 0,
     width: '100%',
+    height: '15rem',
     textAlign: 'center',
     background: 'white',
     margin: '0 auto',
-    maxWidth: '800px',
+    marginBottom: '.5rem',
+    justifyContent: 'left',
+    overflowY: 'auto',
   },
 });
 
 const Footer: React.FC<FooterProps> = ({ children }) => {
   const classes = useStyles();
 
-  return <footer className={classes.footer}>{children}</footer>;
+  return <div className={classes.footer}>{children}</div>;
 };
 
 export default Footer;

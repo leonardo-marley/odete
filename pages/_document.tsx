@@ -7,7 +7,7 @@ import { ServerStyleSheets } from '@mui/styles'; // works with @material-ui/core
 export default class MyDocument extends Document {
   render() {
     return (
-      <Html lang='en'>
+      <Html lang='pt-BR'>
         <Head>
           <link
             rel='stylesheet'

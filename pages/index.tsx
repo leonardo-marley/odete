@@ -2,8 +2,6 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import { Container, Typography, Link } from '@mui/material';
 import OdeteForm from '../components/OdeteForm';
-import Footer from '../components/Footer';
-
 
 const Home: NextPage = () => {
   return (
@@ -18,25 +16,22 @@ const Home: NextPage = () => {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <Container component='main' maxWidth='md' sx={{ mt: 4, mb: 8 }}>
-        <Typography component='h1' variant='h1' align='center' color='secondary'>
+      <Container component='main' maxWidth='md' sx={{ mt: 2, mb: 8 }}>
+        <Typography component='h1' variant='h1' align='center' color='warning.main'>
           Odete
         </Typography>
         <Typography
           align='center'
           color='textSecondary'
           lineHeight='1.25'
-          sx={{ fontSize: 20, mt: 3, mb: 4 }}
+          sx={{ fontSize: 20, mt: 0, mb: 4 }}
         >
           Tire suas dúvidas comigo, jovem.
         </Typography>
-        
+
         <OdeteForm />
         
       </Container>
-      <Footer>
-        
-      </Footer>
     </div>
   );
 };

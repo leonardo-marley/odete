@@ -2,7 +2,10 @@ import { useEffect, useState } from 'react';
 import { sayInput, populateVoiceList} from '../api';
 import { IconButton, Container } from '@mui/material';
 import MicIcon from '@mui/icons-material/Mic';
+import SendIcon from '@mui/icons-material/Send';
 import useSpeechRecognition from './hooks/useSpeechRecognitionHook'
+import ContentChat from './ContentChat';
+import Message from './Message';
 
 import {
   Box,
@@ -87,7 +90,7 @@ const OdeteForm = () => {
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    textInput.length && sayInput(textInput, 'Microsoft Maria - Portuguese (Brazil)', 0, 1.9);
+    textInput.length && sayInput(textInput, 'Microsoft Maria - Portuguese (Brazil)', 0, 1.75);
     console.log(voice, pitch, rate)
   };
 
@@ -96,6 +99,9 @@ const OdeteForm = () => {
   return (
     <>{ isClient &&
     <Box textAlign='center'>
+      <ContentChat>
+          <Message>Seja bem vindo.</Message>
+      </ContentChat>
       <form autoComplete='off' onSubmit={handleSubmit}>
         {/* <FormControl
           sx={{ width: '25%', minWidth: '150px', m: '0.5rem 0.5rem 1.5rem' }}
@@ -144,17 +150,12 @@ const OdeteForm = () => {
             ))}
           </Select>
         </FormControl> */}
-        <FormControl fullWidth >
-            <Box style={{display: 'grid', height: '100%', width: '100%',border: '5px', borderColor: '#00000099'}}>
-
-            </Box>
-        </FormControl>
         <FormControl fullWidth>
           <TextField
             onChange={(e) => setTextInput(e.target.value)}
             label='Insira o Texto'
             variant='outlined'
-            color='primary'
+            color='warning'
             multiline
             rows={4}
             required
@@ -164,20 +165,29 @@ const OdeteForm = () => {
           { hasRecognitionSupport && 
             <IconButton
               sx={{
-                width: "3rem",
-                position: 'absolute',
-                marginTop: '10.5rem',
-                marginLeft: '50rem'
+                width: "2.7rem",
+              alignSelf: 'end',
+              marginTop: '-4.8rem',
               }}
               onClick={startListening}
-            ><MicIcon sx={{fontSize: 32} }/></IconButton>
+            ><MicIcon sx={{fontSize: 25} }/></IconButton>
           }
+          <IconButton
+            sx={{
+              width: "2.7rem",
+              alignSelf: 'end',
+              marginTop: '-5.4rem',
+            }}
+            onClick={startListening}
+          >
+            <SendIcon sx={{fontSize: 25} }/>
+          </IconButton>
         </FormControl>
-        <ButtonGroup aria-label='Talkify Controls'>
+        <ButtonGroup aria-label='Talkify Controls' sx={{mt: 10}}>
           <Button
             type='submit'
             variant='contained'
-            color='secondary'
+            color='warning'
             size='large'
             disableElevation
             onClick={() => textInput ? setTextInput(textInput) : setTextInput(text)}
@@ -186,7 +196,7 @@ const OdeteForm = () => {
           </Button>
           <Button
             variant='contained'
-            color='primary'
+            color='secondary'
             size='large'
             disableElevation
             onClick={() => window.speechSynthesis.pause()}
