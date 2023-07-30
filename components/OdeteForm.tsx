@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { sayInput, populateVoiceList} from '../api';
-import { IconButton } from '@mui/material';
+import { IconButton, Container } from '@mui/material';
 import MicIcon from '@mui/icons-material/Mic';
 import useSpeechRecognition from './hooks/useSpeechRecognitionHook'
 
@@ -87,7 +87,8 @@ const OdeteForm = () => {
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    textInput.length && sayInput(textInput, voice, pitch, rate);
+    textInput.length && sayInput(textInput, 'Microsoft Maria - Portuguese (Brazil)', 0, 1.9);
+    console.log(voice, pitch, rate)
   };
 
 
@@ -96,7 +97,7 @@ const OdeteForm = () => {
     <>{ isClient &&
     <Box textAlign='center'>
       <form autoComplete='off' onSubmit={handleSubmit}>
-        <FormControl
+        {/* <FormControl
           sx={{ width: '25%', minWidth: '150px', m: '0.5rem 0.5rem 1.5rem' }}
         >
           <InputLabel htmlFor='voices-id'>Vozes</InputLabel>
@@ -142,6 +143,11 @@ const OdeteForm = () => {
               </MenuItem>
             ))}
           </Select>
+        </FormControl> */}
+        <FormControl fullWidth >
+            <Box style={{display: 'grid', height: '100%', width: '100%',border: '5px', borderColor: '#00000099'}}>
+
+            </Box>
         </FormControl>
         <FormControl fullWidth>
           <TextField
@@ -150,7 +156,7 @@ const OdeteForm = () => {
             variant='outlined'
             color='primary'
             multiline
-            rows={8}
+            rows={4}
             required
             sx={{ mb: 4 }}
             value={text ? text : textInput}

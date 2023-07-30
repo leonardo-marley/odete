@@ -28,10 +28,10 @@ const Home: NextPage = () => {
           lineHeight='1.25'
           sx={{ fontSize: 20, mt: 3, mb: 4 }}
         >
-          Tire suas dúvidas comigo jovem.
+          Tire suas dúvidas comigo, jovem.
         </Typography>
         
-          <OdeteForm />
+        <OdeteForm />
         
       </Container>
       <Footer>
