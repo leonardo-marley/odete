@@ -17,7 +17,6 @@ const useStyles = makeStyles({
     background: 'white',
     margin: '0 auto',
     marginBottom: '.5rem',
-    justifyContent: 'left',
     overflowY: 'auto',
   },
 });

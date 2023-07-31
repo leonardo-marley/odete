@@ -3,6 +3,9 @@ import { sayInput, populateVoiceList} from '../api';
 import { IconButton, Container } from '@mui/material';
 import MicIcon from '@mui/icons-material/Mic';
 import SendIcon from '@mui/icons-material/Send';
+import MicOffIcon from '@mui/icons-material/MicOff';
+import HeadsetOffIcon from '@mui/icons-material/HeadsetOff';
+import HeadsetIcon from '@mui/icons-material/Headset';
 import useSpeechRecognition from './hooks/useSpeechRecognitionHook'
 import ContentChat from './ContentChat';
 import Message from './Message';
@@ -34,9 +37,16 @@ const OdeteForm = () => {
   const [able, setAble] = useState<boolean>();
   const [voiceOptions, setVoiceOptions] = useState([]);
   const [voice, setVoice] = useState('Alex');
-  const [pitch, setPitch] = useState<number>(1);
-  const [rate, setRate] = useState<number>(1);
-  const [focus, setFocus] = useState(false);
+  // const [pitch, setPitch] = useState<number>(1);
+  // const [rate, setRate] = useState<number>(1);
+  // const [focus, setFocus] = useState(false);
+  // const array = [{content: 'Seja bem vindo.', fromUser: false},{content: 'Como fazer uma extração CSV?', fromUser: true}]
+  interface Mensagens {
+    content: string,
+    fromUser: boolean
+  }
+  let array: Array<Mensagens> = [];
+  const [messages, setMessages] = useState(array);
   const {
     text,
     startListening, 
@@ -83,24 +93,49 @@ const OdeteForm = () => {
   }, [voiceList]);
 
   useEffect(() => {
-    setIsClient(true)
+    setIsClient(true);
+    let mensagemData: Mensagens = {
+      content: 'Seja bem vindo.',
+      fromUser: false
+    }
+    array.push(mensagemData)
   }, []);
 
 
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    textInput.length && sayInput(textInput, 'Microsoft Maria - Portuguese (Brazil)', 0, 1.75);
-    console.log(voice, pitch, rate)
+    textInput.length && sayInput(textInput, 'Microsoft Maria - Portuguese (Brazil)', 0, 1.25);
   };
 
-
+  const enviar = () => {
+    let mensagemData: Mensagens = {
+      content: `${textInput}`,
+      fromUser: true
+    }
+    array.push(mensagemData)
+    setMessages(array.concat(messages))
+    console.log(messages)
+  }
 
   return (
     <>{ isClient &&
     <Box textAlign='center'>
       <ContentChat>
-          <Message>Seja bem vindo.</Message>
+          {
+            messages.map((item,index) => (
+              <Message content={item.content} fromUser={item.fromUser} key={index}/>
+            ))
+          }
+          <IconButton
+            sx={{
+              width: "2.7rem",
+              position: 'absolute',
+              alignSelf: 'end',
+            }}
+            onClick={startListening}
+          > <HeadsetIcon sx={{fontSize: 25}} />
+          </IconButton>
       </ContentChat>
       <form autoComplete='off' onSubmit={handleSubmit}>
         {/* <FormControl
@@ -170,7 +205,7 @@ const OdeteForm = () => {
               marginTop: '-4.8rem',
               }}
               onClick={startListening}
-            ><MicIcon sx={{fontSize: 25} }/></IconButton>
+            ><MicIcon sx={{fontSize: 25}}/></IconButton>
           }
           <IconButton
             sx={{
@@ -178,7 +213,7 @@ const OdeteForm = () => {
               alignSelf: 'end',
               marginTop: '-5.4rem',
             }}
-            onClick={startListening}
+            onClick={enviar}
           >
             <SendIcon sx={{fontSize: 25} }/>
           </IconButton>
