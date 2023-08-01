@@ -198,6 +198,7 @@ const OdeteForm = () => {
             required
             sx={{ mb: 4 }}
             value={text ? text : textInput}
+            onKeyDown={(e) => (e.key === 'Enter' && !e.shiftKey) && enviar()}
           />
           { hasRecognitionSupport && 
             <IconButton
