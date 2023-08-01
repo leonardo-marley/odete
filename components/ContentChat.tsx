@@ -6,14 +6,14 @@ interface FooterProps {
 
 const useStyles = makeStyles({
   footer: {
-    display: 'grid',
+    display: 'flex',
+    flexDirection: 'column',
     border: 'thin solid rgba(0,0,0,.2)',
     borderRadius: '.3rem',
     padding: '1rem',
     bottom: 0,
     width: '100%',
     height: '15rem',
-    textAlign: 'center',
     background: 'white',
     margin: '0 auto',
     marginBottom: '.5rem',

@@ -113,8 +113,10 @@ const OdeteForm = () => {
       content: `${textInput}`,
       fromUser: true
     }
+    textInput !== '' &&
     array.push(mensagemData)
     setMessages(array.concat(messages))
+    setTextInput('')
     console.log(messages)
   }
 
@@ -125,7 +127,7 @@ const OdeteForm = () => {
           {
             messages.map((item,index) => (
               <Message content={item.content} fromUser={item.fromUser} key={index}/>
-            ))
+            )).reverse()
           }
           <IconButton
             sx={{
