@@ -40,6 +40,7 @@ import {
       requestHeaders['OpenAI-Organization'] = process.env.OPENAI_API_ORG
     }
   
+    console.log(requestHeaders)
     const res = await fetch('https://api.openai.com/v1/chat/completions', {
       headers: requestHeaders,
       method: 'POST',

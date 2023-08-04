@@ -9,6 +9,10 @@ import HeadsetIcon from '@mui/icons-material/Headset';
 import useSpeechRecognition from './hooks/useSpeechRecognitionHook'
 import ContentChat from './ContentChat';
 import Message from './Message';
+import {type ChatGPTMessage} from './Message';
+import { useCookies } from 'react-cookie'
+
+const COOKIE_NAME = 'nextjs-example-ai-chat-gpt3'
 
 import {
   Box,
@@ -37,16 +41,26 @@ const OdeteForm = () => {
   const [able, setAble] = useState<boolean>();
   const [voiceOptions, setVoiceOptions] = useState([]);
   const [voice, setVoice] = useState('Alex');
+  const [cookie, setCookie] = useCookies([COOKIE_NAME])
   // const [pitch, setPitch] = useState<number>(1);
   // const [rate, setRate] = useState<number>(1);
   // const [focus, setFocus] = useState(false);
   // const array = [{content: 'Seja bem vindo.', fromUser: false},{content: 'Como fazer uma extração CSV?', fromUser: true}]
-  interface Mensagens {
-    content: string,
-    fromUser: boolean
-  }
-  let array: Array<Mensagens> = [];
-  const [messages, setMessages] = useState(array);
+  
+  // interface Mensagens {
+  //   content: string,
+  //   fromUser: boolean
+  // }
+  // let array: Array<Mensagens> = [];
+
+  const initialMessages: ChatGPTMessage[] = [
+    {
+      role: 'assistant',
+      content: 'Oi! Sou sua assistente. Me pergunte qualquer coisa!',
+    },
+  ]
+  
+  const [messages, setMessages] = useState<ChatGPTMessage[]>(initialMessages);
   const {
     text,
     startListening, 
@@ -56,50 +70,58 @@ const OdeteForm = () => {
   } = useSpeechRecognition();
   const [isClient, setIsClient] = useState(false)
 
-  useEffect(() => {
-    const fetchVoices = () => {
-      try {
-        window.speechSynthesis.onvoiceschanged = () => {
-          const data = populateVoiceList();
-          setVoiceList(data);
-        };
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchVoices();
-  }, []);
+  // useEffect(() => {
+  //   const fetchVoices = () => {
+  //     try {
+  //       window.speechSynthesis.onvoiceschanged = () => {
+  //         const data = populateVoiceList();
+  //         setVoiceList(data);
+  //       };
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   };
+  //   fetchVoices();
+  // }, []);
 
-  useEffect(() => {
-    setVoiceOptions(
-      voiceList.length ? (
-        voiceList?.map(({ name, lang }: voiceProps, i: number) => (
-          <MenuItem value={name} key={i}>
-            {name} - {lang}
-          </MenuItem>
-        ))
-      ) : (
-        <MenuItem value='Alex'>Odete</MenuItem>
-      )
-    );
-  }, [voiceList]);
+  // useEffect(() => {
+  //   setVoiceOptions(
+  //     voiceList.length ? (
+  //       voiceList?.map(({ name, lang }: voiceProps, i: number) => (
+  //         <MenuItem value={name} key={i}>
+  //           {name} - {lang}
+  //         </MenuItem>
+  //       ))
+  //     ) : (
+  //       <MenuItem value='Alex'>Odete</MenuItem>
+  //     )
+  //   );
+  // }, [voiceList]);
 
-  useEffect(() => {
-    setVoice((prevVoice: any) =>
-      voiceList.length > 0
-        ? voiceList?.filter((voice: any) => voice.default)[0].name
-        : prevVoice
-    );
-  }, [voiceList]);
+  // useEffect(() => {
+  //   setVoice((prevVoice: any) =>
+  //     voiceList.length > 0
+  //       ? voiceList?.filter((voice: any) => voice.default)[0].name
+  //       : prevVoice
+  //   );
+  // }, [voiceList]);
 
   useEffect(() => {
     setIsClient(true);
-    let mensagemData: Mensagens = {
-      content: 'Seja bem vindo.',
-      fromUser: false
-    }
-    array.push(mensagemData)
+    // let mensagemData: Mensagens = {
+    //   content: 'Seja bem vindo.',
+    //   fromUser: false
+    // }
+    // array.push(mensagemData)
   }, []);
+
+  useEffect(() => {
+    if (!cookie[COOKIE_NAME]) {
+      // generate a semi random short id
+      const randomId = Math.random().toString(36).substring(7)
+      setCookie(COOKIE_NAME, randomId)
+    }
+  }, [cookie, setCookie])
 
 
 
@@ -109,15 +131,69 @@ const OdeteForm = () => {
   };
 
   const enviar = () => {
-    let mensagemData: Mensagens = {
-      content: `${textInput}`,
-      fromUser: true
+    // let mensagemData: Mensagens = {
+    //   content: `${textInput}`,
+    //   fromUser: true
+    // }
+    // textInput !== '' &&
+    // array.push(mensagemData)
+    // setMessages(array.concat(messages))
+    // setTextInput('')
+    // console.log(messages)
+  }
+
+  const sendMessage = async (message: string) => {
+    // setLoading(true)
+    const newMessages = [
+      ...messages,
+      { role: 'user', content: message } as ChatGPTMessage,
+    ]
+    setMessages(newMessages)
+    const last10messages = newMessages.slice(-10) // remember last 10 messages
+
+    const response = await fetch('./api/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        messages: last10messages,
+        user: cookie[COOKIE_NAME],
+      }),
+    })
+
+    console.log('Edge function returned.')
+
+    if (!response.ok) {
+      throw new Error(response.statusText)
     }
-    textInput !== '' &&
-    array.push(mensagemData)
-    setMessages(array.concat(messages))
-    setTextInput('')
-    console.log(messages)
+
+    // This data is a ReadableStream
+    const data = response.body
+    if (!data) {
+      return
+    }
+
+    const reader = data.getReader()
+    const decoder = new TextDecoder()
+    let done = false
+
+    let lastMessage = ''
+
+    while (!done) {
+      const { value, done: doneReading } = await reader.read()
+      done = doneReading
+      const chunkValue = decoder.decode(value)
+
+      lastMessage = lastMessage + chunkValue
+
+      setMessages([
+        ...newMessages,
+        { role: 'assistant', content: lastMessage } as ChatGPTMessage,
+      ])
+
+      // setLoading(false)
+    }
   }
 
   return (
@@ -125,9 +201,9 @@ const OdeteForm = () => {
     <Box textAlign='center'>
       <ContentChat>
           {
-            messages.map((item,index) => (
-              <Message content={item.content} fromUser={item.fromUser} key={index}/>
-            )).reverse()
+            messages.map(({ content, role }, index) => (
+              <Message content={content} role={role} key={index}/>
+            ))
           }
           <IconButton
             sx={{
@@ -198,7 +274,7 @@ const OdeteForm = () => {
             required
             sx={{ mb: 4 }}
             value={text ? text : textInput}
-            onKeyDown={(e) => (e.key === 'Enter' && !e.shiftKey) && enviar()}
+            onKeyDown={(e) => (e.key === 'Enter' && !e.shiftKey) && sendMessage(textInput)}
           />
           { hasRecognitionSupport && 
             <IconButton
@@ -216,7 +292,7 @@ const OdeteForm = () => {
               alignSelf: 'end',
               marginTop: '-5.4rem',
             }}
-            onClick={enviar}
+            onClick={() => sendMessage(textInput)}
           >
             <SendIcon sx={{fontSize: 25} }/>
           </IconButton>

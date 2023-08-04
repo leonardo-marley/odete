@@ -1,4 +1,4 @@
-import { type ChatGPTMessage } from '../../components/ChatLine'
+import { type ChatGPTMessage } from '../../components/Message'
 import { OpenAIStream, OpenAIStreamPayload } from '../../utils/OpenAIStream'
 
 // break the app if the API key is missing
@@ -13,7 +13,8 @@ export const config = {
 const handler = async (req: Request): Promise<Response> => {
   const body = await req.json()
 
-  const messages: ChatGPTMessage[] = [
+  const messages: ChatGPTMessage[] = 
+  [
     {
       role: 'system',
       content: `An AI assistant that is a Front-end expert in Next.js, React and Vercel have an inspiring and humorous conversation. 

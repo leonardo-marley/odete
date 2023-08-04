@@ -1,9 +1,16 @@
 import { makeStyles, propsToClassKey } from '@mui/styles';
 
-interface MessageProps {
-  content: string,
-  fromUser?: boolean,
-  key?: number
+// interface MessageProps {
+//   content: string,
+//   fromUser?: boolean,
+//   key?: number
+// }
+
+type ChatGPTAgent = 'user' | 'system' | 'assistant'
+
+export interface ChatGPTMessage {
+  role: ChatGPTAgent
+  content: string
 }
 
 const useStyles = makeStyles({
@@ -43,10 +50,10 @@ const useStyles = makeStyles({
   },
 });
 
-const Footer: React.FC<MessageProps> = ({content,fromUser}) => {
+const Footer: React.FC<ChatGPTMessage> = ({content, role}) => {
   const classes = useStyles();
 
-  return <div className={fromUser===true ? classes.user : classes.chat}>{content}</div>;
+  return <div className={role==='user' ? classes.user : classes.chat}>{content}</div>;
 };
 
 export default Footer;
