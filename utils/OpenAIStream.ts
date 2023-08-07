@@ -41,6 +41,7 @@ import {
     }
   
     console.log(requestHeaders)
+    console.log(JSON.stringify(payload))
     const res = await fetch('https://api.openai.com/v1/chat/completions', {
       headers: requestHeaders,
       method: 'POST',
@@ -84,7 +85,6 @@ import {
         }
       },
     })
-  
     return stream
   }
   

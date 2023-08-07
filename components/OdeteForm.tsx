@@ -144,6 +144,7 @@ const OdeteForm = () => {
 
   const sendMessage = async (message: string) => {
     // setLoading(true)
+    setTextInput('')
     const newMessages = [
       ...messages,
       { role: 'user', content: message } as ChatGPTMessage,

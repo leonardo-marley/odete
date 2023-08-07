@@ -28,6 +28,7 @@ const useStyles = makeStyles({
     alignSelf: 'left',
     color: 'white',
     boxShadow: '2px 2px 2px 1px rgba(0, 0, 0, 0.1)',
+    display:'grid'
   },
   user: {
     border: 'thin solid rgba(0,0,0,.2)',
@@ -47,13 +48,23 @@ const useStyles = makeStyles({
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
     boxShadow: '2px 2px 2px 1px rgba(0, 0, 0, 0.1)',
+    flexDirection: 'column'
   },
 });
 
+const convertNewLines = (text: string) =>
+  text.split('\n').map((line, i) => (
+    <span key={i}>
+      {line}
+      <br/>
+    </span>
+  ))
+
 const Footer: React.FC<ChatGPTMessage> = ({content, role}) => {
   const classes = useStyles();
+  const formatteMessage = convertNewLines(content)
 
-  return <div className={role==='user' ? classes.user : classes.chat}>{content}</div>;
+  return <div className={role==='user' ? classes.user : classes.chat}>{formatteMessage}</div>;
 };
 
 export default Footer;
