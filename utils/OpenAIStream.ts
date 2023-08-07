@@ -3,6 +3,7 @@ import {
     ParsedEvent,
     ReconnectInterval,
   } from 'eventsource-parser'
+
   
   export type ChatGPTAgent = 'user' | 'system' | 'assistant'
   
@@ -28,6 +29,7 @@ import {
   export async function OpenAIStream(payload: OpenAIStreamPayload) {
     const encoder = new TextEncoder()
     const decoder = new TextDecoder()
+
   
     let counter = 0
   
@@ -39,10 +41,8 @@ import {
     if (process.env.OPENAI_API_ORG) {
       requestHeaders['OpenAI-Organization'] = process.env.OPENAI_API_ORG
     }
-  
-    console.log(requestHeaders)
-    console.log(JSON.stringify(payload))
-    const res = await fetch('https://api.openai.com/v1/chat/completions', {
+
+      const res = await fetch ('https://api.openai.com/v1/chat/completions', {
       headers: requestHeaders,
       method: 'POST',
       body: JSON.stringify(payload),
@@ -80,6 +80,7 @@ import {
         // stream response (SSE) from OpenAI may be fragmented into multiple chunks
         // this ensures we properly read chunks and invoke an event for each SSE event stream
         const parser = createParser(onParse)
+        console.log(parser)
         for await (const chunk of res.body as any) {
           parser.feed(decoder.decode(chunk))
         }

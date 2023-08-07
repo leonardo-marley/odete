@@ -14,6 +14,13 @@ import { useCookies } from 'react-cookie'
 
 const COOKIE_NAME = 'nextjs-example-ai-chat-gpt3'
 
+const initialMessages: ChatGPTMessage[] = [
+  {
+    role: 'assistant',
+    content: 'Oi! Sou sua assistente. Me pergunte qualquer coisa!',
+  },
+]
+
 import {
   Box,
   ButtonGroup,
@@ -53,12 +60,7 @@ const OdeteForm = () => {
   // }
   // let array: Array<Mensagens> = [];
 
-  const initialMessages: ChatGPTMessage[] = [
-    {
-      role: 'assistant',
-      content: 'Oi! Sou sua assistente. Me pergunte qualquer coisa!',
-    },
-  ]
+  
   
   const [messages, setMessages] = useState<ChatGPTMessage[]>(initialMessages);
   const {
@@ -164,13 +166,15 @@ const OdeteForm = () => {
     })
 
     console.log('Edge function returned.')
+    console.log(response)
 
     if (!response.ok) {
       throw new Error(response.statusText)
     }
 
     // This data is a ReadableStream
-    const data = response.body
+    const data = await response.body
+    console.log(data)
     if (!data) {
       return
     }
@@ -275,7 +279,7 @@ const OdeteForm = () => {
             required
             sx={{ mb: 4 }}
             value={text ? text : textInput}
-            onKeyDown={(e) => (e.key === 'Enter' && !e.shiftKey) && sendMessage(textInput)}
+            onKeyDown={(e) => (e.key === 'Enter' && !e.shiftKey) && textInput !== '' && sendMessage(textInput)}
           />
           { hasRecognitionSupport && 
             <IconButton
