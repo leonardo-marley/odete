@@ -138,6 +138,8 @@ const OdeteForm = () => {
 
       lastMessage = lastMessage + chunkValue
 
+      
+
       setMessages([
         ...newMessages,
         { role: 'assistant', content: lastMessage } as ChatGPTMessage,
@@ -145,6 +147,7 @@ const OdeteForm = () => {
 
       // setLoading(false)
     }
+    sayInput(lastMessage, 'Microsoft Maria - Portuguese (Brazil)', 0, 1.5)
   }
 
   return (
