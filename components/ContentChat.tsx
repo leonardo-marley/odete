@@ -13,7 +13,7 @@ const useStyles = makeStyles({
     padding: '1rem',
     bottom: 0,
     width: '100%',
-    height: '15rem',
+    height: '20rem',
     background: 'white',
     margin: '0 auto',
     marginBottom: '.5rem',

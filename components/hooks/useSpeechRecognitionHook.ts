@@ -37,8 +37,13 @@ const useSpeechRecognition = () => {
         recognition.stop();
     }
 
+    const esvazia = () => {
+        setText('');
+    }
+
     return {
         text,
+        esvazia,
         isListening,
         startListening,
         stopListening,

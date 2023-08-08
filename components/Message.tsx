@@ -1,4 +1,6 @@
 import { makeStyles, propsToClassKey } from '@mui/styles';
+import { useEffect } from 'react';
+import { sayInput } from '../api';
 
 // interface MessageProps {
 //   content: string,
@@ -63,6 +65,11 @@ const convertNewLines = (text: string) =>
 const Footer: React.FC<ChatGPTMessage> = ({content, role}) => {
   const classes = useStyles();
   const formatteMessage = convertNewLines(content)
+
+  useEffect(() => {
+    role === 'assistant' &&
+    sayInput(content, 'Microsoft Maria - Portuguese (Brazil)', 0, 1.75)
+  }, []);
 
   return <div className={role==='user' ? classes.user : classes.chat}>{formatteMessage}</div>;
 };

@@ -10,7 +10,7 @@ const Home: NextPage = () => {
         <title>Odete</title>
         <meta
           name='description'
-          content='Text to speech app using the Web Speech API.'
+          content='Sua assistente Odete.'
         />
         <meta name='viewport' content='initial-scale=1, width=device-width' />
         <link rel='icon' href='/favicon.ico' />
