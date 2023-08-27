@@ -34,33 +34,34 @@ import {
 } from '@mui/material';
 
 interface PropsMic {
-  onClick: any;
+  onMouseDown: any;
+  onMouseUp: any;
   isActive: boolean;
 }
 
 const MicButton = (props: PropsMic) => {
   return(
-    <>{ props.isActive === true ?
+    <>
       <IconButton
-        onClick={props.onClick}
+        onMouseDown={props.onMouseDown}
+        onMouseUp={props.onMouseUp}
       >
-        <MicIcon sx={{fontSize: 25}}/>
+        { props.isActive === true ? 
+          <MicIcon sx={{fontSize: 25, fill: '#ed6c02'}}/>
+        : 
+          <MicOffIcon sx={{fontSize: 25}}/>
+        }
       </IconButton>
-      :
-      <IconButton
-        onClick={props.onClick}
-      >
-        <MicOffIcon sx={{fontSize: 25}}/>
-      </IconButton>
-      }
     </>
   )
 }
+
 
 const OdeteForm = () => {
   const [textInput, setTextInput] = useState('');
   const [cookie, setCookie] = useCookies([COOKIE_NAME])
   const [micAble, setMicAble] = useState(false)
+  const [voiceAble, setVoiceAble] = useState(true)
   
   const [messages, setMessages] = useState<ChatGPTMessage[]>(initialMessages);
   const {
@@ -147,7 +148,8 @@ const OdeteForm = () => {
 
       // setLoading(false)
     }
-    sayInput(lastMessage, 'Microsoft Maria - Portuguese (Brazil)', 0, 1.5)
+    voiceAble === true &&
+      sayInput(lastMessage, 'Microsoft Maria - Portuguese (Brazil)', 0, 1.5)
   }
 
   return (
@@ -165,8 +167,9 @@ const OdeteForm = () => {
               position: 'absolute',
               alignSelf: 'end',
             }}
-            onClick={startListening}
-          > <HeadsetOffIcon sx={{fontSize: 25}} />
+            onClick={() => voiceAble === true ?  setVoiceAble(false) : setVoiceAble(true)}
+          > 
+            {voiceAble === true ? <HeadsetIcon onClick={() => window.speechSynthesis.cancel()} sx={{fontSize: 25}} /> : <HeadsetOffIcon sx={{fontSize: 25}} />}
           </IconButton>
       </ContentChat>
       <form autoComplete='off' onSubmit={handleSubmit}>
@@ -185,13 +188,15 @@ const OdeteForm = () => {
           />
           { hasRecognitionSupport && 
             <div 
-              onClick={() => micAble === false ? setMicAble(true) : setMicAble(false)} 
+              // onClick={() => micAble === false ? setMicAble(true) : setMicAble(false)}
+              onMouseDown={() => setMicAble(true)} 
+              onMouseUp={() => setMicAble(false)}
               style={{width: "2.7rem",
                       alignSelf: 'end',
                       marginTop: '-4.8rem'
                     }}
             >
-              <MicButton isActive={micAble} onClick={micAble === false ? startListening : stopListening} />
+              <MicButton isActive={micAble} onMouseDown={startListening} onMouseUp={stopListening}/>
             </div>
           }
           <IconButton
