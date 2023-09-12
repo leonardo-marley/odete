@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { sayInput, populateVoiceList} from '../api';
+import { sayInput, populateVoiceList } from '../api';
 import { IconButton, Container } from '@mui/material';
 import MicIcon from '@mui/icons-material/Mic';
 import SendIcon from '@mui/icons-material/Send';
@@ -9,7 +9,7 @@ import HeadsetIcon from '@mui/icons-material/Headset';
 import useSpeechRecognition from './hooks/useSpeechRecognitionHook'
 import ContentChat from './ContentChat';
 import Message from './Message';
-import {type ChatGPTMessage} from './Message';
+import { type ChatGPTMessage } from './Message';
 import { useCookies } from 'react-cookie'
 
 const COOKIE_NAME = 'nextjs-example-ai-chat-gpt3'
@@ -40,16 +40,16 @@ interface PropsMic {
 }
 
 const MicButton = (props: PropsMic) => {
-  return(
+  return (
     <>
       <IconButton
         onMouseDown={props.onMouseDown}
         onMouseUp={props.onMouseUp}
       >
-        { props.isActive === true ? 
-          <MicIcon sx={{fontSize: 25, fill: '#ed6c02'}}/>
-        : 
-          <MicOffIcon sx={{fontSize: 25}}/>
+        {props.isActive === true ?
+          <MicIcon sx={{ fontSize: 25, fill: '#ed6c02' }} />
+          :
+          <MicOffIcon sx={{ fontSize: 25 }} />
         }
       </IconButton>
     </>
@@ -62,14 +62,14 @@ const OdeteForm = () => {
   const [cookie, setCookie] = useCookies([COOKIE_NAME])
   const [micAble, setMicAble] = useState(false)
   const [voiceAble, setVoiceAble] = useState(true)
-  
+
   const [messages, setMessages] = useState<ChatGPTMessage[]>(initialMessages);
   const {
     text,
     esvazia,
-    startListening, 
-    stopListening, 
-    isListening, 
+    startListening,
+    stopListening,
+    isListening,
     hasRecognitionSupport
   } = useSpeechRecognition();
   const [isClient, setIsClient] = useState(false)
@@ -139,7 +139,7 @@ const OdeteForm = () => {
 
       lastMessage = lastMessage + chunkValue
 
-      
+
 
       setMessages([
         ...newMessages,
@@ -148,17 +148,18 @@ const OdeteForm = () => {
 
       // setLoading(false)
     }
+    let mensagem = lastMessage.replace("NeoSyx", "néossix");
     voiceAble === true &&
-      sayInput(lastMessage, 'Microsoft Maria - Portuguese (Brazil)', 0, 1.5)
+      sayInput(mensagem, 'Microsoft Maria - Portuguese (Brazil)', 0, 1.5)
   }
 
   return (
-    <>{ isClient &&
-    <Box textAlign='center'>
-      <ContentChat>
+    <>{isClient &&
+      <Box textAlign='center'>
+        <ContentChat>
           {
             messages.map(({ content, role }, index) => (
-              <Message content={content} role={role} key={index}/>
+              <Message content={content} role={role} key={index} />
             ))
           }
           <IconButton
@@ -167,50 +168,51 @@ const OdeteForm = () => {
               position: 'absolute',
               alignSelf: 'end',
             }}
-            onClick={() => voiceAble === true ?  setVoiceAble(false) : setVoiceAble(true)}
-          > 
-            {voiceAble === true ? <HeadsetIcon onClick={() => window.speechSynthesis.cancel()} sx={{fontSize: 25}} /> : <HeadsetOffIcon sx={{fontSize: 25}} />}
-          </IconButton>
-      </ContentChat>
-      <form autoComplete='off' onSubmit={handleSubmit}>
-        <FormControl fullWidth>
-          <TextField
-            onChange={(e) => setTextInput(e.target.value)}
-            label='Pergunte o que desejar'
-            variant='outlined'
-            color='warning'
-            multiline
-            rows={4}
-            required
-            sx={{ mb: 4 }}
-            value={text ? text : textInput}
-            onKeyDown={(e) => (e.key === 'Enter' && !e.shiftKey) && textInput !== '' && sendMessage(textInput)}
-          />
-          { hasRecognitionSupport && 
-            <div 
-              // onClick={() => micAble === false ? setMicAble(true) : setMicAble(false)}
-              onMouseDown={() => setMicAble(true)} 
-              onMouseUp={() => setMicAble(false)}
-              style={{width: "2.7rem",
-                      alignSelf: 'end',
-                      marginTop: '-4.8rem'
-                    }}
-            >
-              <MicButton isActive={micAble} onMouseDown={startListening} onMouseUp={stopListening}/>
-            </div>
-          }
-          <IconButton
-            sx={{
-              width: "2.7rem",
-              alignSelf: 'end',
-              marginTop: '-5rem',
-            }}
-            onClick={() => text.length > 0 ? sendMessage(text).then(esvazia()) : textInput.length > 0 && sendMessage(textInput)}
+            onClick={() => voiceAble === true ? setVoiceAble(false) : setVoiceAble(true)}
           >
-            <SendIcon sx={{fontSize: 25} }/>
+            {voiceAble === true ? <HeadsetIcon onClick={() => window.speechSynthesis.cancel()} sx={{ fontSize: 25 }} /> : <HeadsetOffIcon sx={{ fontSize: 25 }} />}
           </IconButton>
-        </FormControl>
-        {/* <ButtonGroup aria-label='Talkify Controls' sx={{mt: 10}}>
+        </ContentChat>
+        <form autoComplete='off' onSubmit={handleSubmit}>
+          <FormControl fullWidth>
+            <TextField
+              onChange={(e) => setTextInput(e.target.value)}
+              label='Pergunte o que desejar'
+              variant='outlined'
+              color='warning'
+              multiline
+              rows={4}
+              required
+              sx={{ mb: 4 }}
+              value={text ? text : textInput}
+              onKeyDown={(e) => (e.key === 'Enter' && !e.shiftKey) && textInput !== '' && sendMessage(textInput)}
+            />
+            {hasRecognitionSupport &&
+              <div
+                // onClick={() => micAble === false ? setMicAble(true) : setMicAble(false)}
+                onMouseDown={() => setMicAble(true)}
+                onMouseUp={() => setMicAble(false)}
+                style={{
+                  width: "2.7rem",
+                  alignSelf: 'end',
+                  marginTop: '-4.8rem'
+                }}
+              >
+                <MicButton isActive={micAble} onMouseDown={startListening} onMouseUp={stopListening} />
+              </div>
+            }
+            <IconButton
+              sx={{
+                width: "2.7rem",
+                alignSelf: 'end',
+                marginTop: '-5rem',
+              }}
+              onClick={() => text.length > 0 ? sendMessage(text).then(esvazia()) : textInput.length > 0 && sendMessage(textInput)}
+            >
+              <SendIcon sx={{ fontSize: 25 }} />
+            </IconButton>
+          </FormControl>
+          {/* <ButtonGroup aria-label='Talkify Controls' sx={{mt: 10}}>
           <Button
             type='submit'
             variant='contained'
@@ -249,8 +251,8 @@ const OdeteForm = () => {
             Parar
           </Button>
         </ButtonGroup> */}
-      </form>
-    </Box>
+        </form>
+      </Box>
     }
     </>
   );
