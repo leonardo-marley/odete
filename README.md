@@ -1,34 +1,61 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Odete - Chatbot com Web Speech API
 
-## Getting Started
+Odete é um chatbot desenvolvido para um hackathon com o objetivo de oferecer uma assistente virtual integrada a diversos projetos. A aplicação foi construída utilizando Next.js, TypeScript e a API do ChatGPT, além da Web Speech API, que permite transcrição de áudio para texto e síntese de voz, proporcionando uma experiência interativa mais acessível para os usuários.
 
-First, run the development server:
+## Índice
+- [Recursos](#recursos)
+- [Tecnologias Utilizadas](#tecnologias-utilizadas)
+- [Instalação](#instalação)
+- [Como Usar](#como-usar)
+- [Contribuição](#contribuição)
+- [Licença](#licença)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+## Recursos
+- **Interação por Voz**: Odete permite que o usuário escolha entre digitar ou usar a voz para interagir, transcrevendo o áudio para texto e sintetizando texto em áudio.
+- **Integração com a API do ChatGPT**: A assistente utiliza o ChatGPT para responder às interações do usuário.
+- **Flexível para Integração**: Odete foi pensada para ser facilmente integrada em diversos projetos, oferecendo uma interface de assistente que se adapta a diferentes necessidades.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tecnologias Utilizadas
+- **Next.js**: Framework de React para renderização do lado do servidor.
+- **TypeScript**: Superconjunto de JavaScript que adiciona tipos estáticos ao código, facilitando a manutenção e aumentando a robustez.
+- **API do ChatGPT**: Fornece respostas inteligentes às perguntas do usuário.
+- **Web Speech API**: Responsável por processar a transcrição de voz para texto e vice-versa, permitindo um uso acessível.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Instalação
+1. Clone este repositório:
+    ```bash
+    git clone https://github.com/leonardo-marley/odete.git
+    cd odete
+    ```
+2. Instale as dependências:
+    ```bash
+    npm install
+    ```
+3. Configure sua chave da API do ChatGPT:
+   - Crie um arquivo `.env.local` na raiz do projeto e adicione:
+     ```env
+     NEXT_PUBLIC_CHATGPT_API_KEY=sua-chave-aqui
+     ```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+4. Inicie o servidor de desenvolvimento:
+    ```bash
+    npm run dev
+    ```
 
-## Learn More
+5. Acesse `http://localhost:3000` no navegador para usar Odete.
 
-To learn more about Next.js, take a look at the following resources:
+## Como Usar
+- Ao abrir o aplicativo, você pode escolher entre digitar uma mensagem ou clicar no ícone de microfone para falar com Odete.
+- **Transcrição de Áudio**: Fale e a Odete converterá seu áudio em texto para enviar à API do ChatGPT.
+- **Síntese de Voz**: Ao receber uma resposta, você pode optar por ouvir a resposta de Odete em voz alta.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Contribuição
+Contribuições são bem-vindas! Para contribuir:
+1. Faça um fork do projeto.
+2. Crie uma branch com a sua feature (`git checkout -b feature/nova-feature`).
+3. Comite suas mudanças (`git commit -m 'Adiciona nova feature'`).
+4. Faça o push para a branch (`git push origin feature/nova-feature`).
+5. Abra um Pull Request.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Licença
+Este projeto é licenciado sob a licença MIT.
